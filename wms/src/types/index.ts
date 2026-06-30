@@ -61,22 +61,3 @@ export type OccupancyMap = Record<string, Pallet>;
 
 /** chave = `${stageId}:${street}-${position}` */
 export type HighlightSet = Set<string>;
-
-/**
- * Contrato mínimo de armazenamento persistente que o app utiliza.
- * Implementado hoje por `window.storage` (ver services/storage.ts).
- * Abstrair via interface permite trocar o backend (ex: API REST/Bolt
- * Database real) no futuro sem tocar nos componentes ou hooks.
- */
-export interface KeyValueStore {
-  get(key: string, shared?: boolean): Promise<{ key: string; value: string; shared: boolean } | null>;
-  set(key: string, value: string, shared?: boolean): Promise<{ key: string; value: string; shared: boolean } | null>;
-  delete(key: string, shared?: boolean): Promise<{ key: string; deleted: boolean; shared: boolean } | null>;
-  list(prefix?: string, shared?: boolean): Promise<{ keys: string[]; prefix?: string; shared: boolean } | null>;
-}
-
-declare global {
-  interface Window {
-    storage: KeyValueStore;
-  }
-}
