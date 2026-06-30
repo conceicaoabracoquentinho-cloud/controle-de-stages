@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Map as MapIcon, Plus, RefreshCw, Settings } from "lucide-react";
+import { Map as MapIcon, Plus, Settings } from "lucide-react";
 import { Button, Toast } from "../components/ui";
 import { StageMap } from "../components/StageMap";
 import { SearchPanel } from "../components/SearchPanel";
@@ -22,7 +22,6 @@ export function StagesPage() {
     lastSync,
     occupiedByStage,
     indicators,
-    refresh,
     createStage,
     deleteStage,
     createCarrier,
@@ -102,9 +101,6 @@ export function StagesPage() {
           <span style={{ fontSize: 12, color: colors.textMuted }}>
             {lastSync ? `Sincronizado às ${lastSync.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}` : ""}
           </span>
-          <Button variant="ghost" icon={RefreshCw} onClick={refresh}>
-            Atualizar
-          </Button>
           <Button variant="secondary" icon={Settings} onClick={() => setConfigOpen(true)}>
             Configuração
           </Button>
