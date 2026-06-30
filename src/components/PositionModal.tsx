@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertCircle, Check, Pencil, Trash2, Truck, Package } from "lucide-react";
+import { CircleAlert as AlertCircle, Check, Pencil, Trash2, Truck, Package } from "lucide-react";
 import { Button, Field, Modal, Row, TextInput } from "./ui";
 import { CarrierCombobox } from "./CarrierCombobox";
 import { colors, inputStyle, space } from "../styles/tokens";
