@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Controle de Stages WMS — Documentação Oficial</title>
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 18mm 20mm 18mm;
+    @bottom-center {
+      content: "Controle de Stages WMS — Documentação Oficial · Página " counter(page) " de " counter(pages);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-size: 9pt;
+      color: #6b6e76;
+    }
+  }
+  @page :first {
+    margin: 0;
+    @bottom-center { content: ""; }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #1f2937;
+    line-height: 1.6;
+    font-size: 11pt;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ---------- CAPA ---------- */
+  .cover {
+    page-break-after: always;
+    height: 297mm;
+    background: linear-gradient(160deg, #0f172a 0%, #1e293b 55%, #0f766e 100%);
+    color: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30mm 22mm;
+    position: relative;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6mm;
+    background: linear-gradient(90deg, #3b82f6, #14b8a6, #22c55e);
+  }
+  .cover-top { display: flex; align-items: center; gap: 14px; }
+  .cover-logo {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(59,130,246,0.2);
+    border: 1px solid rgba(59,130,246,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+  }
+  .cover-brand { font-size: 11pt; letter-spacing: 2px; text-transform: uppercase; color: #94a3b8; }
+  .cover-center { margin-top: -40mm; }
+  .cover-title {
+    font-size: 42pt;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 8mm 0;
+    letter-spacing: -1px;
+  }
+  .cover-subtitle {
+    font-size: 16pt;
+    font-weight: 300;
+    color: #cbd5e1;
+    margin: 0 0 10mm 0;
+  }
+  .cover-desc {
+    font-size: 11pt;
+    color: #94a3b8;
+    max-width: 140mm;
+    line-height: 1.7;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8mm;
+    border-top: 1px solid rgba(148,163,184,0.25);
+    padding-top: 10mm;
+  }
+  .cover-meta-item { display: flex; flex-direction: column; gap: 2mm; }
+  .cover-meta-label { font-size: 9pt; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; }
+  .cover-meta-value { font-size: 13pt; font-weight: 500; color: #e2e8f0; }
+  .cover-footer { font-size: 9pt; color: #64748b; text-align: right; }
+
+  /* ---------- ESTRUTURA ---------- */
+  .toc {
+    page-break-after: always;
+    padding: 4mm 0;
+  }
+  .toc h2 {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 3px solid #14b8a6;
+    padding-bottom: 4mm;
+    margin: 0 0 8mm 0;
+  }
+  .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc;
+    padding: 3mm 0;
+    border-bottom: 1px dashed #e2e8f0;
+    display: flex;
+    align-items: baseline;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-weight: 700;
+    color: #14b8a6;
+    width: 14mm;
+    font-size: 12pt;
+  }
+  .toc li span { flex: 1; font-size: 11.5pt; color: #1e293b; font-weight: 500; }
+
+  .section {
+    page-break-before: always;
+    padding: 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8mm;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 4mm;
+  }
+  .section-num {
+    font-size: 28pt;
+    font-weight: 800;
+    color: #14b8a6;
+    line-height: 1;
+    min-width: 18mm;
+  }
+  .section-title {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.2;
+  }
+  h3 {
+    font-size: 13pt;
+    font-weight: 600;
+    color: #0f766e;
+    margin: 7mm 0 3mm 0;
+    padding-bottom: 2mm;
+    border-bottom: 1px solid #ccfbf1;
+  }
+  h4 {
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 5mm 0 2mm 0;
+  }
+  p { margin: 0 0 3mm 0; text-align: justify; }
+  ul, ol { margin: 0 0 4mm 6mm; padding: 0; }
+  li { margin-bottom: 1.5mm; }
+
+  /* ---------- COMPONENTES ---------- */
+  .card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #14b8a6;
+    border-radius: 6px;
+    padding: 4mm 5mm;
+    margin: 3mm 0 4mm 0;
+    page-break-inside: avoid;
+  }
+  .card-title {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 11pt;
+    margin-bottom: 1.5mm;
+  }
+  .card-title code {
+    background: #0f172a;
+    color: #5eead4;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 9.5pt;
+  }
+  .card p { margin: 0 0 2mm 0; font-size: 10.5pt; }
+  .card ul { margin: 1mm 0 0 4mm; }
+  .card li { font-size: 10.5pt; }
+
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    background: #f1f5f9;
+    color: #0f766e;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 9.5pt;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 4mm 5mm;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 9pt;
+    line-height: 1.5;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    margin: 3mm 0;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3mm 0 5mm 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+  th {
+    background: #0f766e;
+    color: #fff;
+    text-align: left;
+    padding: 2.5mm 3mm;
+    font-weight: 600;
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 2.5mm 3mm;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  td code { font-size: 9pt; }
+
+  .badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-pk { background: #fef3c7; color: #92400e; }
+  .badge-fk { background: #dbeafe; color: #1e40af; }
+  .badge-uq { background: #fce7f3; color: #9d174d; }
+  .badge-ck { background: #ede9fe; color: #5b21b6; }
+  .badge-idx { background: #d1fae5; color: #065f46; }
+
+  .flow {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    border-radius: 6px;
+    padding: 4mm 5mm;
+    margin: 3mm 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5pt;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    page-break-inside: avoid;
+  }
+
+  .note {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 4px solid #f59e0b;
+    border-radius: 4px;
+    padding: 3mm 4mm;
+    margin: 3mm 0;
+    font-size: 10pt;
+  }
+
+  /* ---------- LINK / QR ---------- */
+  .link-page {
+    page-break-before: always;
+    text-align: center;
+    padding-top: 30mm;
+  }
+  .link-page h2 {
+    font-size: 24pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4mm 0;
+  }
+  .link-page .url-box {
+    display: inline-block;
+    margin: 8mm 0;
+    padding: 5mm 10mm;
+    background: #0f172a;
+    border-radius: 8px;
+  }
+  .link-page .url-box a {
+    color: #5eead4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12pt;
+    text-decoration: none;
+  }
+  .qr-placeholder {
+    width: 70mm;
+    height: 70mm;
+    margin: 8mm auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .link-instructions {
+    margin-top: 10mm;
+    font-size: 10pt;
+    color: #64748b;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm;
+    margin: 4mm 0;
+  }
+  .tech-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 3mm 4mm;
+    page-break-inside: avoid;
+  }
+  .tech-item strong { color: #0f766e; display: block; font-size: 10.5pt; margin-bottom: 1mm; }
+  .tech-item span { font-size: 9.5pt; color: #475569; }
+
+  .arch-box {
+    border: 2px solid #0f766e;
+    border-radius: 8px;
+    padding: 4mm 5mm;
+    margin: 3mm 0;
+    text-align: center;
+    background: #f0fdfa;
+    font-weight: 600;
+    color: #0f766e;
+  }
+  .arch-arrow {
+    text-align: center;
+    color: #14b8a6;
+    font-size: 14pt;
+    margin: 1mm 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ CAPA ============ -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-logo">W</div>
+    <div>
+      <div class="cover-brand">Warehouse Management System</div>
+    </div>
+  </div>
+
+  <div class="cover-center">
+    <h1 class="cover-title">Controle de<br>Stages WMS</h1>
+    <div class="cover-subtitle">Documentação Oficial do Sistema</div>
+    <p class="cover-desc">
+      Sistema de gestão de armazém (WMS) para controle de ocupação de posições
+      em stages de armazenagem. Permite cadastrar paletes, pesquisá-los por TRO
+      ou transportadora, visualizar a ocupação em mapa visual e gerenciar a
+      configuração de stages e transportadoras — com persistência real em
+      banco de dados PostgreSQL.
+    </p>
+  </div>
+
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Sistema</span>
+      <span class="cover-meta-value">Controle de Stages WMS</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Versão</span>
+      <span class="cover-meta-value">0.2.0</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Data de Geração</span>
+      <span class="cover-meta-value">01 de Julho de 2026</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Classificação</span>
+      <span class="cover-meta-value">Documentação Técnica</span>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    Documento gerado automaticamente a partir do código-fonte em produção.
+  </div>
+</div>
+
+<!-- ============ SUMÁRIO ============ -->
+<div class="toc">
+  <h2>Sumário</h2>
+  <ol>
+    <li><span>Visão Geral</span></li>
+    <li><span>Tecnologias Utilizadas</span></li>
+    <li><span>Arquitetura</span></li>
+    <li><span>Estrutura Completa do Projeto</span></li>
+    <li><span>Regras de Negócio</span></li>
+    <li><span>Banco de Dados</span></li>
+    <li><span>Componentes</span></li>
+    <li><span>Hooks</span></li>
+    <li><span>Services</span></li>
+    <li><span>Fluxos Operacionais</span></li>
+    <li><span>Instalação</span></li>
+    <li><span>Manutenção</span></li>
+    <li><span>Roadmap</span></li>
+    <li><span>Link Oficial</span></li>
+    <li><span>Linguagem de Programação</span></li>
+  </ol>
+</div>
+
+<!-- ============ 1. VISÃO GERAL ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2 class="section-title">Visão Geral</h2>
+  </div>
+
+  <h3>Objetivo do Sistema</h3>
+  <p>
+    O <strong>Controle de Stages WMS</strong> é um sistema de Warehouse Management
+    System (WMS) que controla a ocupação de posições em áreas de armazenagem
+    (Stages). Cada Stage possui ruas e posições organizadas em grade. O sistema
+    permite cadastrar paletes em posições específicas, pesquisá-los por TRO ou
+    transportadora, e visualizar a ocupação em um mapa visual.
+  </p>
+
+  <h3>Problema que Resolve</h3>
+  <p>
+    Em armazéns e centros de distribuição, é fundamental saber exatamente qual
+    palete ocupa qual posição, evitar duplicidade de ocupação, e localizar
+    rapidamente um palete por seu identificador (TRO) ou transportadora. Sem um
+    sistema dedicado, esse controle é feito manualmente (planilhas ou papel),
+    sujeito a erros, perda de informação e dificuldade de pesquisa. O Controle
+    de Stages WMS resolve isso com:
+  </p>
+  <ul>
+    <li>Mapa visual em tempo real da ocupação de cada stage.</li>
+    <li>Garantia de que cada posição abriga no máximo um palete (regra enforced no banco).</li>
+    <li>Pesquisa instantânea por TRO (normalizado) ou transportadora em todos os stages.</li>
+    <li>Persistência real em banco de dados — os dados sobrevivem a refresh, fechamento do navegador e redeploys.</li>
+    <li>Indicadores de ocupação (total, livres, ocupados, taxa) sempre atualizados.</li>
+  </ul>
+
+  <h3>Fluxo Operacional</h3>
+  <div class="flow">Configuração inicial
+    │  Cadastrar Stages (nome, ruas, posições)
+    │  Cadastrar Transportadoras
+    ▼
+Uso diário
+    │  Clicar em posição livre no mapa → cadastrar palete (transportadora + TRO + remessa)
+    │  Clicar em posição ocupada → visualizar / editar / liberar
+    │  Pesquisar por TRO ou transportadora → visualizar no mapa
+    ▼
+Gestão
+       Excluir stages/transportadoras não utilizados
+       Acompanhar indicadores de ocupação</div>
+
+  <h3>Público-alvo</h3>
+  <p>
+    Operadores de armazém, supervisores de logística e equipes de expedição que
+    precisam controlar a ocupação de posições em tempo real, com pesquisa
+    rápida e visualização clara do estado do armazém.
+  </p>
+</div>
+
+<!-- ============ 2. TECNOLOGIAS ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2 class="section-title">Tecnologias Utilizadas</h2>
+  </div>
+
+  <p>Todas as tecnologias que compõem o projeto, com sua respectiva função:</p>
+
+  <div class="tech-grid">
+    <div class="tech-item">
+      <strong>React 18.3</strong>
+      <span>Framework de interface. Componentes funcionais com hooks. Renderização declarativa do mapa, modais e painéis.</span>
+    </div>
+    <div class="tech-item">
+      <strong>TypeScript 5.5</strong>
+      <span>Tipagem estática sobre JavaScript. Garante contratos de dados em tempo de compilação e reduz bugs em runtime.</span>
+    </div>
+    <div class="tech-item">
+      <strong>Vite 5.3</strong>
+      <span>Bundler e dev server. Build otimizado com HMR instantâneo em desenvolvimento e tree-shaking em produção.</span>
+    </div>
+    <div class="tech-item">
+      <strong>Supabase JS SDK 2.110</strong>
+      <span>Cliente PostgreSQL gerenciado. Fornece API REST automática, RLS e autenticação. Usado aqui para persistência real dos dados.</span>
+    </div>
+    <div class="tech-item">
+      <strong>PostgreSQL</strong>
+      <span>Banco de dados relacional gerenciado pelo Supabase. Armazena stages, carriers e pallets com constraints, índices e triggers.</span>
+    </div>
+    <div class="tech-item">
+      <strong>lucide-react 0.383</strong>
+      <span>Biblioteca de ícones SVG. Usada em botões, cabeçalhos e indicadores visuais (mapa, pacote, caminhão, etc.).</span>
+    </div>
+    <div class="tech-item">
+      <strong>HTML5 + CSS3 inline</strong>
+      <span>Estrutura semântica e estilização via design tokens (cores, espaçamentos, raios) centralizados em <code>styles/tokens.ts</code>.</span>
+    </div>
+    <div class="tech-item">
+      <strong>npm</strong>
+      <span>Gerenciador de pacotes. Instala dependências, executa scripts (<code>dev</code>, <code>build</code>, <code>preview</code>).</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Nota:</strong> O projeto não utiliza TailwindCSS. A estilização é feita
+    via design tokens em TypeScript (<code>src/styles/tokens.ts</code>) aplicados
+    como estilos inline, garantindo um único ponto de verdade visual.
+  </div>
+</div>
+
+<!-- ============ 3. ARQUITETURA ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2 class="section-title">Arquitetura</h2>
+  </div>
+
+  <p>
+    A arquitetura segue o princípio da Responsabilidade Única (SRP) em camadas
+    bem definidas. Componentes nunca acessam o banco diretamente; regras de
+    negócio vivem em hooks; lógica de pesquisa é pura; e a persistência é
+    isolada em um único service.
+  </p>
+
+  <div class="arch-box">Camada de Apresentação<br><small>components / pages — React + estilos inline</small></div>
+  <div class="arch-arrow">▼</div>
+  <div class="arch-box">Camada de Estado e Regras de Negócio<br><small>hooks — useWmsData, useToast, useMapHighlight, useDebouncedValue</small></div>
+  <div class="arch-arrow">▼</div>
+  <div class="arch-box">Camada de Serviços<br><small>services — storage.ts (persistência) · search.ts (pesquisa pura)</small></div>
+  <div class="arch-arrow">▼</div>
+  <div class="arch-box">Camada de Dados<br><small>Supabase / PostgreSQL — tables: stages, carriers, pallets</small></div>
+
+  <h3>Comunicação entre Componentes</h3>
+  <p>
+    Os componentes se comunicam via <strong>props</strong> (dados de entrada e
+    callbacks). O estado global da aplicação vive no hook <code>useWmsData</code>,
+    instanciado em <code>StagesPage</code>. Modais e painéis recebem dados via
+    props e notificam alterações via callbacks (<code>onSave</code>,
+    <code>onRelease</code>, <code>onViewOnMap</code>).
+  </p>
+
+  <h3>Circulação de Dados</h3>
+  <p>
+    Na inicialização, <code>useWmsData</code> chama <code>wmsStorage.loadAll()</code>
+    que consulta as três tabelas em paralelo e popula o estado local. A partir
+    daí, toda escrita (criar/editar/liberar/excluir) atualiza o estado local
+    <em>e</em> persiste no banco imediatamente. Derivados
+    (<code>occupiedByStage</code>, <code>indicators</code>) são memoizados e
+    recalculam apenas quando a fonte muda.
+  </p>
+
+  <h3>Como funciona o Banco</h3>
+  <p>
+    O Supabase expõe um endpoint REST sobre PostgreSQL. O cliente usa a
+    <code>anon key</code> (segura para operações permitidas pelo RLS). As
+    tabelas <code>stages</code>, <code>carriers</code> e <code>pallets</code>
+    têm Row Level Security habilitado com políticas que permitem CRUD completo
+    para <code>anon</code> e <code>authenticated</code> (single-tenant, sem
+    autenticação por enquanto). Uma constraint <code>UNIQUE(stage_id, street,
+    position)</code> garante no nível do banco que duas posições não sejam
+    ocupadas pelo mesmo palete.
+  </p>
+
+  <h3>Como funciona o Mapa</h3>
+  <p>
+    O <code>StageMap</code> gera a grade dinamicamente a partir da configuração
+    do Stage: colunas = ruas, linhas = posições (sempre de cima para baixo).
+    Cada célula é um botão circular colorido: verde (livre) ou vermelho (ocupado,
+    com ícone de pacote). Posições destacadas pela pesquisa recebem borda azul
+    e glow. O componente é memoizado com <code>React.memo</code> para evitar
+    re-renderizações quando apenas outros stages mudam.
+  </p>
+
+  <h3>Como funciona a Pesquisa</h3>
+  <p>
+    O <code>SearchPanel</code> usa <code>useDebouncedValue</code> (350ms) para
+    evitar consultar a cada tecla. A lógica pura em <code>search.ts</code>
+    normaliza o TRO (remove prefixo, espaços, zeros à esquerda) para
+    correspondência exata, ou filtra por parte do nome da transportadora
+    (case-insensitive). A pesquisa sempre considera todos os stages. Resultados
+    são ordenados por Stage → Rua → Posição e agrupados por Stage.
+  </p>
+</div>
+
+<!-- ============ 4. ESTRUTURA ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2 class="section-title">Estrutura Completa do Projeto</h2>
+  </div>
+
+  <pre><code>project/
+├── index.html                  HTML raiz
+├── package.json                Dependências e scripts
+├── tsconfig.json               Configuração TypeScript
+├── vite.config.ts              Configuração Vite
+├── .env                        Variáveis de ambiente (Supabase)
+├── docs/                       Documentação gerada
+├── supabase/
+│   └── migrations/
+│       └── 001_create_wms_tables.sql   Schema do banco
+└── src/
+    ├── main.tsx                Entry point React
+    ├── App.tsx                 Componente raiz
+    ├── pages/
+    │   └── StagesPage.tsx      Tela operacional principal
+    ├── components/
+    │   ├── StageMap.tsx        Mapa visual de posições
+    │   ├── SearchPanel.tsx     Painel de pesquisa
+    │   ├── ConfigPanel.tsx     Modal de configuração
+    │   ├── PositionModal.tsx   Modal de posição
+    │   ├── CarrierCombobox.tsx Combobox de transportadoras
+    │   └── ui/                 Design System
+    │       ├── Button.tsx
+    │       ├── Field.tsx
+    │       ├── Modal.tsx
+    │       ├── Row.tsx
+    │       ├── Toast.tsx
+    │       └── index.ts
+    ├── hooks/
+    │   ├── useWmsData.ts       Hook central de dados
+    │   ├── useToast.ts         Notificações
+    │   ├── useMapHighlight.ts  Destaque no mapa
+    │   └── useDebouncedValue.ts Debounce
+    ├── services/
+    │   ├── storage.ts          Persistência (Supabase)
+    │   └── search.ts           Lógica de pesquisa
+    ├── styles/
+    │   └── tokens.ts           Design tokens
+    ├── types/
+    │   └── index.ts            Tipos de domínio
+    └── utils/
+        ├── uid.ts              Gerador de UUIDs
+        └── tro.ts              Normalização de TRO</code></pre>
+
+  <h3>Responsabilidade de cada pasta</h3>
+  <table>
+    <thead><tr><th>Pasta</th><th>Responsabilidade</th></tr></thead>
+    <tbody>
+      <tr><td><code>src/pages</code></td><td>Telas completas da aplicação. Hoje apenas <code>StagesPage</code>.</td></tr>
+      <tr><td><code>src/components</code></td><td>Componentes reutilizáveis de UI específica do domínio (mapa, painéis, modais).</td></tr>
+      <tr><td><code>src/components/ui</code></td><td>Design System genérico (Button, Modal, Field, Toast, Row).</td></tr>
+      <tr><td><code>src/hooks</code></td><td>Lógica de estado e regras de negócio reutilizável.</td></tr>
+      <tr><td><code>src/services</code></td><td>Camada de acesso a dados (storage) e lógica pura (search).</td></tr>
+      <tr><td><code>src/styles</code></td><td>Design tokens centralizados (cores, espaçamentos, raios).</td></tr>
+      <tr><td><code>src/types</code></td><td>Tipos de domínio compartilhados.</td></tr>
+      <tr><td><code>src/utils</code></td><td>Funções utilitárias puras (uid, tro).</td></tr>
+      <tr><td><code>supabase/migrations</code></td><td>Scripts SQL versionados do banco de dados.</td></tr>
+      <tr><td><code>docs</code></td><td>Documentação técnica e SRS.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 5. REGRAS DE NEGÓCIO ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <h2 class="section-title">Regras de Negócio</h2>
+  </div>
+
+  <p>Todas as regras implementadas, com sua localização no código:</p>
+
+  <table>
+    <thead><tr><th>ID</th><th>Regra</th><th>Implementação</th></tr></thead>
+    <tbody>
+      <tr><td>RN-01</td><td>Nunca permitir dois paletes na mesma Stage+Rua+Posição</td><td><code>savePallet</code> verifica conflito + constraint <span class="badge badge-uq">UNIQUE</span> no banco</td></tr>
+      <tr><td>RN-02</td><td>Transportadora é sempre selecionada da lista (nunca digitação livre)</td><td><code>CarrierCombobox</code></td></tr>
+      <tr><td>RN-03</td><td>Nome de Stage é único (case-insensitive)</td><td><code>createStage</code> valida + <span class="badge badge-uq">UNIQUE</span> no banco</td></tr>
+      <tr><td>RN-04</td><td>Nome de Transportadora é único (case-insensitive)</td><td><code>createCarrier</code> valida + <span class="badge badge-uq">UNIQUE</span> no banco</td></tr>
+      <tr><td>RN-05</td><td>Não excluir Stage com paletes vinculados</td><td><code>deleteStage</code> bloqueia</td></tr>
+      <tr><td>RN-06</td><td>Não excluir Transportadora com paletes vinculados</td><td><code>deleteCarrier</code> bloqueia</td></tr>
+      <tr><td>RN-07</td><td>TRO é normalizado (apenas dígitos) para pesquisa</td><td><code>normalizeTRODigits</code></td></tr>
+      <tr><td>RN-08</td><td>Pesquisa por TRO remove zeros à esquerda para comparação</td><td><code>troSearchKey</code></td></tr>
+      <tr><td>RN-09</td><td>Resultados ordenados por Stage → Rua → Posição</td><td><code>searchPallets</code> sort</td></tr>
+      <tr><td>RN-10</td><td>Colunas do mapa = Ruas, linhas = Posições (sempre de cima para baixo)</td><td><code>StageMap</code></td></tr>
+      <tr><td>RN-11</td><td>Destaque do mapa remove-se automaticamente após 3,2s</td><td><code>useMapHighlight</code></td></tr>
+      <tr><td>RN-12</td><td>Debounce de pesquisa entre 300-500ms</td><td><code>useDebouncedValue</code> (350ms)</td></tr>
+      <tr><td>RN-13</td><td>Modal fecha automaticamente após salvar com sucesso; permanece aberto em erro</td><td><code>StagesPage.handleSavePallet</code></td></tr>
+      <tr><td>RN-14</td><td>Nunca usar <code>alert()</code> do navegador — sempre Toast</td><td><code>Toast</code> component</td></tr>
+      <tr><td>RN-15</td><td>IDs sempre UUIDs válidos (RFC 4122)</td><td><code>uid()</code> usa <code>crypto.randomUUID()</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 6. BANCO DE DADOS ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <h2 class="section-title">Banco de Dados</h2>
+  </div>
+
+  <p>
+    Banco de dados <strong>PostgreSQL</strong> gerenciado pelo Supabase. A
+    migration <code>001_create_wms_tables.sql</code> cria todas as tabelas,
+    constraints, índices, trigger e políticas RLS.
+  </p>
+
+  <h3>Tabela <code>stages</code></h3>
+  <table>
+    <thead><tr><th>Coluna</th><th>Tipo</th><th>Constraints</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td><span class="badge badge-pk">PK</span> DEFAULT <code>gen_random_uuid()</code></td></tr>
+      <tr><td><code>name</code></td><td>text</td><td><span class="badge badge-uq">UNIQUE</span> NOT NULL</td></tr>
+      <tr><td><code>streets</code></td><td>integer</td><td>NOT NULL, <span class="badge badge-ck">CHECK &gt; 0</span></td></tr>
+      <tr><td><code>positions</code></td><td>integer</td><td>NOT NULL, <span class="badge badge-ck">CHECK &gt; 0</span></td></tr>
+      <tr><td><code>created_at</code></td><td>timestamptz</td><td>DEFAULT <code>now()</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tabela <code>carriers</code></h3>
+  <table>
+    <thead><tr><th>Coluna</th><th>Tipo</th><th>Constraints</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td><span class="badge badge-pk">PK</span> DEFAULT <code>gen_random_uuid()</code></td></tr>
+      <tr><td><code>name</code></td><td>text</td><td><span class="badge badge-uq">UNIQUE</span> NOT NULL</td></tr>
+      <tr><td><code>active</code></td><td>boolean</td><td>NOT NULL DEFAULT <code>true</code></td></tr>
+      <tr><td><code>created_at</code></td><td>timestamptz</td><td>DEFAULT <code>now()</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tabela <code>pallets</code></h3>
+  <table>
+    <thead><tr><th>Coluna</th><th>Tipo</th><th>Constraints</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid</td><td><span class="badge badge-pk">PK</span> DEFAULT <code>gen_random_uuid()</code></td></tr>
+      <tr><td><code>stage_id</code></td><td>uuid</td><td>NOT NULL, <span class="badge badge-fk">FK</span> → stages(id) ON DELETE CASCADE</td></tr>
+      <tr><td><code>carrier_id</code></td><td>uuid</td><td>NOT NULL, <span class="badge badge-fk">FK</span> → carriers(id) ON DELETE RESTRICT</td></tr>
+      <tr><td><code>street</code></td><td>integer</td><td>NOT NULL, <span class="badge badge-ck">CHECK &gt; 0</span></td></tr>
+      <tr><td><code>position</code></td><td>integer</td><td>NOT NULL, <span class="badge badge-ck">CHECK &gt; 0</span></td></tr>
+      <tr><td><code>tro</code></td><td>text</td><td>NOT NULL</td></tr>
+      <tr><td><code>shipment</code></td><td>text</td><td>DEFAULT <code>''</code></td></tr>
+      <tr><td><code>created_at</code></td><td>timestamptz</td><td>DEFAULT <code>now()</code></td></tr>
+      <tr><td><code>updated_at</code></td><td>timestamptz</td><td>DEFAULT <code>now()</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Relacionamentos</h3>
+  <pre><code>stages (1) ──────&lt; (N) pallets &gt;────── (1) carriers
+  │                    │                      │
+  │  ON DELETE         │  ON DELETE            │  ON DELETE
+  │  CASCADE           │  RESTRICT             │  (bloqueia se
+  │  (remove paletes   │  (bloqueia exclusão   │   houver paletes)
+  │   do stage)        │   se houver paletes)  │
+  └────────────────────┴──────────────────────┘</code></pre>
+
+  <h3>Constraint Única</h3>
+  <p>
+    <code>UNIQUE (stage_id, street, position)</code> — garante a regra de
+    negócio RN-01 no nível do banco: é impossível que dois paletes ocupem a
+    mesma posição, mesmo que a validação no cliente falhe.
+  </p>
+
+  <h3>Índices</h3>
+  <table>
+    <thead><tr><th>Índice</th><th>Tabela/Coluna</th><th>Finalidade</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-idx">IDX</span> <code>idx_pallets_stage_id</code></td><td>pallets.stage_id</td><td>Acelera filtro por Stage</td></tr>
+      <tr><td><span class="badge badge-idx">IDX</span> <code>idx_pallets_carrier_id</code></td><td>pallets.carrier_id</td><td>Acelera filtro por transportadora</td></tr>
+      <tr><td><span class="badge badge-idx">IDX</span> <code>idx_pallets_tro</code></td><td>pallets.tro</td><td>Acelera pesquisa por TRO</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Trigger</h3>
+  <p>
+    <code>update_pallets_updated_at</code> — atualiza automaticamente a coluna
+    <code>updated_at</code> em qualquer UPDATE da tabela <code>pallets</code>,
+    via função PL/pgSQL <code>update_updated_at_column()</code>.
+  </p>
+
+  <h3>RLS (Row Level Security)</h3>
+  <p>
+    Todas as tabelas têm RLS habilitado. Políticas permitem CRUD completo para
+    <code>anon</code> e <code>authenticated</code> (single-tenant, sem
+    autenticação por enquanto). Quando autenticação for adicionada, basta
+    trocar <code>USING (true)</code> por <code>USING (auth.uid() = user_id)</code>.
+  </p>
+
+  <h3>Fluxo de Gravação</h3>
+  <div class="flow">Componente
+  → useWmsData (valida regra de negócio)
+  → setEstado local (atualização otimista)
+  → wmsStorage.saveXxx()
+  → Supabase (upsert/delete via REST)
+  → PostgreSQL</div>
+
+  <h3>Fluxo de Leitura</h3>
+  <div class="flow">useWmsData (useEffect na inicialização)
+  → wmsStorage.loadAll()
+  → Supabase (SELECT em paralelo: stages, carriers, pallets)
+  → mapeia rows snake_case → camelCase
+  → setEstado local
+  → componentes renderizam</div>
+</div>
+
+<!-- ============ 7. COMPONENTES ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <h2 class="section-title">Componentes</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>StagesPage.tsx</code></div>
+    <p>Tela operacional principal. Renderiza cabeçalho (título + sincronização + botão Configuração), indicadores (total/livres/ocupados/taxa), abas de Stages, o mapa do Stage ativo, o painel de pesquisa e os modais. Orquestra <code>useWmsData</code>, <code>useToast</code> e <code>useMapHighlight</code>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>StageMap.tsx</code></div>
+    <p>Mapa visual em grade. Colunas = Ruas, linhas = Posições. Cada célula é um botão circular: verde (livre) ou vermelho (ocupado, com ícone de pacote). Posições destacadas pela pesquisa recebem borda azul. Memoizado com <code>React.memo</code>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>SearchPanel.tsx</code></div>
+    <p>Painel de pesquisa lateral. Alternância entre TRO e Transportadora. Campo com debounce de 350ms. Resultados agrupados por Stage, cada grupo com botão "Visualizar no mapa".</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>ConfigPanel.tsx</code></div>
+    <p>Modal de configuração com duas abas: Stages (criar com nome/ruas/posições, listar e excluir) e Transportadoras (criar e excluir). Puramente apresentacional — validações em <code>useWmsData</code>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>PositionModal.tsx</code></div>
+    <p>Modal único de posição com três modos: cadastro (posição livre), visualização (posição ocupada, leitura) e edição (posição ocupada, edição). Inclui botão "Liberar posição". Fecha automaticamente após salvar com sucesso.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>CarrierCombobox.tsx</code></div>
+    <p>Combobox pesquisável para seleção de transportadora. Filtra por nome, fecha ao clicar fora, mostra check no item selecionado. Garante que a transportadora seja sempre selecionada da lista (RN-02).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>ui/Button.tsx</code></div>
+    <p>Botão padronizado com 5 variantes: primary, secondary, danger, success, ghost. Inclui ícone opcional, estado disabled e efeito de hover.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>ui/Field.tsx</code></div>
+    <p>Wrapper de rótulo + campo. Inclui <code>TextInput</code> com foco visual (borda azul ao focar).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>ui/Modal.tsx</code></div>
+    <p>Estrutura base de modal: overlay, título, descrição, corpo, rodapé. Fecha ao clicar no overlay ou no botão X.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>ui/Row.tsx</code></div>
+    <p>Linha rótulo/valor reutilizável para telas de detalhe.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>ui/Toast.tsx</code></div>
+    <p>Notificação temporária fixa no rodapé. Variantes success e error. Substitui <code>alert()</code> em todo o sistema (RN-14).</p>
+  </div>
+</div>
+
+<!-- ============ 8. HOOKS ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <h2 class="section-title">Hooks</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>useWmsData</code></div>
+    <p>Hook central de dados. Concentra TODAS as regras de negócio de leitura/escrita. Carrega dados do Supabase na inicialização. Toda escrita atualiza o estado local e persiste no banco imediatamente.</p>
+    <p><strong>Expõe:</strong></p>
+    <ul>
+      <li><strong>Estado:</strong> <code>loading</code>, <code>stages</code>, <code>carriers</code>, <code>pallets</code>, <code>lastSync</code>, <code>occupiedByStage</code>, <code>indicators</code>.</li>
+      <li><strong>Operações:</strong> <code>createStage</code>, <code>deleteStage</code>, <code>createCarrier</code>, <code>deleteCarrier</code>, <code>savePallet</code>, <code>releasePallet</code>, <code>refresh</code>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>useToast</code></div>
+    <p>Gerencia notificações temporárias. <code>showToast(message, type)</code> exibe uma toast que desaparece após 2800ms. Cancela toast anterior se uma nova for exibida.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>useMapHighlight</code></div>
+    <p>Gerencia o destaque de posições no mapa. <code>highlightOnStage(stageId, positionKeys)</code> destaca posições em azul e remove o destaque após 3200ms. Inclui limpeza do timer no desmontar.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>useScrollToHighlight</code></div>
+    <p>Centraliza a primeira posição destacada na tela via <code>scrollIntoView</code>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>useDebouncedValue</code></div>
+    <p>Atrasa a propagação de um valor em <code>delay</code> ms. Usado pela pesquisa para evitar consultar a cada tecla (350ms).</p>
+  </div>
+</div>
+
+<!-- ============ 9. SERVICES ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <h2 class="section-title">Services</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>services/storage.ts</code></div>
+    <p>Camada de persistência usando Supabase. Isola toda a lógica de acesso ao banco. Mapeia campos snake_case (DB) para camelCase (TS).</p>
+    <p><strong>Funções:</strong></p>
+    <ul>
+      <li><code>loadAll()</code> — carrega stages, carriers e pallets em paralelo (Promise.all).</li>
+      <li><code>saveStages(stages)</code> — sincroniza a lista de stages (upsert + delete diff).</li>
+      <li><code>saveCarriers(carriers)</code> — sincroniza a lista de carriers.</li>
+      <li><code>savePallets(pallets)</code> — sincroniza a lista de pallets.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><code>services/search.ts</code></div>
+    <p>Lógica de pesquisa pura (sem estado, sem side-effects).</p>
+    <p><strong>Funções:</strong></p>
+    <ul>
+      <li><code>searchPallets({ type, query, pallets, stages, carriers })</code> — pesquisa por TRO (correspondência exata após normalização) ou transportadora (parte do nome, case-insensitive). Sempre pesquisa em todos os Stages. Retorna resultados ordenados por Stage → Rua → Posição.</li>
+      <li><code>groupResultsByStage(results)</code> — agrupa resultados por Stage, preservando a ordem.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ 10. FLUXOS ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <h2 class="section-title">Fluxos Operacionais</h2>
+  </div>
+
+  <h3>Cadastrar Palete</h3>
+  <div class="flow">1. Usuário clica em posição livre no mapa
+2. StagesPage abre PositionModal (modo cadastro)
+3. Usuário seleciona transportadora (combobox), digita TRO, remessa opcional
+4. Usuário clica "Salvar"
+5. PositionModal valida campos obrigatórios
+6. StagesPage.handleSavePallet → useWmsData.savePallet
+7. savePallet verifica conflito de posição (RN-01)
+8. Cria registro, atualiza estado local, persiste no Supabase
+9. Em sucesso: fecha modal automaticamente (RN-13)
+10. Toast de sucesso exibido</div>
+
+  <h3>Editar Palete</h3>
+  <div class="flow">1. Usuário clica em posição ocupada no mapa
+2. PositionModal abre em modo visualização
+3. Usuário clica "Editar" → modal muda para modo edição
+4. Usuário altera transportadora/TRO/remessa
+5. Clica "Salvar"
+6. savePallet (modo edição) atualiza o registro no estado e no banco
+7. Trigger update_pallets_updated_at atualiza updated_at
+8. Modal fecha, Toast exibido</div>
+
+  <h3>Liberar Posição</h3>
+  <div class="flow">1. Usuário clica em posição ocupada
+2. PositionModal abre em modo visualização
+3. Usuário clica "Liberar posição"
+4. useWmsData.releasePallet remove o palete do estado
+5. wmsStorage.savePallets persiste (delete diff)
+6. Modal fecha, Toast de sucesso exibido
+7. Posição volta a ficar verde (livre) no mapa</div>
+
+  <h3>Pesquisar</h3>
+  <div class="flow">1. Usuário seleciona tipo (TRO ou Transportadora) no SearchPanel
+2. Digita query
+3. useDebouncedValue aguarda 350ms (RN-12)
+4. searchPallets normaliza query e filtra pallets em todos os Stages
+5. Resultados ordenados por Stage → Rua → Posição (RN-09)
+6. groupResultsByStage agrupa por Stage
+7. Grupos renderizados com botão "Visualizar no mapa"</div>
+
+  <h3>Visualizar no Mapa</h3>
+  <div class="flow">1. Usuário clica "Visualizar no mapa" em um grupo de resultados
+2. StagesPage.handleViewOnMap troca o Stage ativo
+3. useMapHighlight.highlightOnStage destaca as posições em azul
+4. useScrollToHighlight rola a tela para a primeira posição
+5. Destaque remove-se automaticamente após 3,2s (RN-11)</div>
+</div>
+
+<!-- ============ 11. INSTALAÇÃO ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <h2 class="section-title">Instalação</h2>
+  </div>
+
+  <h3>Como Instalar</h3>
+  <pre><code># Clonar o repositório e instalar dependências
+npm install</code></pre>
+
+  <h3>Como Executar (desenvolvimento)</h3>
+  <pre><code># Inicia o Vite dev server com HMR
+npm run dev
+
+# A aplicação abre em http://localhost:5173</code></pre>
+
+  <h3>Como Publicar (build de produção)</h3>
+  <pre><code># Gera o build otimizado em dist/
+npm run build
+
+# Pré-visualiza o build de produção localmente
+npm run preview</code></pre>
+
+  <h3>Como Configurar o Ambiente</h3>
+  <p>
+    O arquivo <code>.env</code> na raiz do projeto deve conter as variáveis do
+    Supabase:
+  </p>
+  <pre><code>VITE_SUPABASE_URL=https://&lt;projeto&gt;.supabase.co
+VITE_SUPABASE_ANON_KEY=&lt;chave-anon&gt;</code></pre>
+  <p>
+    Essas variáveis são lidas em <code>src/services/storage.ts</code> via
+    <code>import.meta.env</code>. Os tipos estão declarados em
+    <code>src/vite-env.d.ts</code>.
+  </p>
+
+  <h3>Como Configurar o Banco</h3>
+  <p>
+    A migration <code>supabase/migrations/001_create_wms_tables.sql</code> cria
+    todas as tabelas, índices, constraints, trigger e políticas RLS. Aplicar
+    via Supabase MCP ou painel do Supabase. Após aplicada, o sistema está
+    pronto para uso — sem dados mock, sem LocalStorage, sem SessionStorage.
+  </p>
+</div>
+
+<!-- ============ 12. MANUTENÇÃO ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <h2 class="section-title">Manutenção</h2>
+  </div>
+
+  <h3>Como Adicionar Novas Funcionalidades</h3>
+  <table>
+    <thead><tr><th>Tipo</th><th>Onde</th><th>Como</th></tr></thead>
+    <tbody>
+      <tr><td>Nova tela</td><td><code>src/pages/</code></td><td>Criar componente, usar hooks existentes (<code>useWmsData</code>).</td></tr>
+      <tr><td>Novo componente de UI</td><td><code>src/components/ui/</code></td><td>Criar, exportar em <code>index.ts</code>.</td></tr>
+      <tr><td>Nova regra de negócio</td><td><code>src/hooks/useWmsData.ts</code></td><td>Adicionar validação na operação correspondente (nunca em componentes).</td></tr>
+      <tr><td>Nova tabela</td><td><code>supabase/migrations/</code></td><td>Criar migration, adicionar mapper em <code>storage.ts</code>, tipo em <code>types/index.ts</code>.</td></tr>
+      <tr><td>Nova pesquisa</td><td><code>src/services/search.ts</code></td><td>Estender lógica pura (sem side-effects).</td></tr>
+      <tr><td>Novo token visual</td><td><code>src/styles/tokens.ts</code></td><td>Adicionar cor/espaçamento/raio. Nunca usar valores soltos.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Boas Práticas</h3>
+  <ul>
+    <li>Componentes nunca acessam o banco diretamente — sempre via <code>useWmsData</code> ou <code>wmsStorage</code>.</li>
+    <li>Regras de negócio ficam em hooks/services, nunca em componentes.</li>
+    <li>Design tokens em <code>styles/tokens.ts</code> — nunca cores/espaçamentos soltos.</li>
+    <li>IDs sempre gerados por <code>uid()</code> (UUIDs válidos para o banco).</li>
+    <li>TRO normalizado apenas via <code>utils/tro.ts</code>.</li>
+    <li>Nunca usar <code>alert()</code> — sempre <code>Toast</code>.</li>
+    <li>Nunca usar LocalStorage/SessionStorage — sempre Supabase.</li>
+    <li>Memoizar derivados com <code>useMemo</code> e componentes pesados com <code>React.memo</code>.</li>
+  </ul>
+</div>
+
+<!-- ============ 13. ROADMAP ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <h2 class="section-title">Roadmap</h2>
+  </div>
+
+  <h3>Fase 2 — Autenticação</h3>
+  <ul>
+    <li>Login com email/senha (Supabase Auth).</li>
+    <li>Multi-tenant (dados isolados por organização).</li>
+    <li>RLS com <code>auth.uid()</code> em vez de <code>USING (true)</code>.</li>
+  </ul>
+
+  <h3>Fase 3 — Auditoria</h3>
+  <ul>
+    <li>Tabela <code>pallet_history</code> com triggers de insert/update/delete.</li>
+    <li>Tela de histórico por posição.</li>
+    <li>Rastreabilidade completa de alterações.</li>
+  </ul>
+
+  <h3>Fase 4 — Dashboard</h3>
+  <ul>
+    <li>Gráficos de ocupação temporal.</li>
+    <li>Tendências de uso por Stage.</li>
+    <li>Exportação CSV/PDF.</li>
+  </ul>
+
+  <h3>Fase 5 — Real-time</h3>
+  <ul>
+    <li>Supabase subscriptions para sincronização entre clientes.</li>
+    <li>Atualização automática quando outro operador cadastra/libera um palete.</li>
+  </ul>
+
+  <h3>Fase 6 — Qualidade</h3>
+  <ul>
+    <li>Testes unitários (Vitest) para services e hooks.</li>
+    <li>Testes de integração para o banco.</li>
+    <li>CI/CD com GitHub Actions.</li>
+  </ul>
+</div>
+
+<!-- ============ 14. LINK OFICIAL ============ -->
+<div class="link-page">
+  <h2>Link Oficial da Aplicação</h2>
+  <p style="font-size: 12pt; color: #64748b; margin-top: 0;">Acesse o sistema publicado em produção:</p>
+
+  <div class="url-box">
+    <a href="https://conceicaoabracoquent-q2yk.bolt.host/">https://conceicaoabracoquent-q2yk.bolt.host/</a>
+  </div>
+
+  <div class="qr-placeholder">
+    <img src="data:image/png;base64,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" alt="QR Code" width="200" height="200" />
+  </div>
+
+  <p style="font-size: 11pt; color: #475569; margin-top: 4mm;">
+    <strong>Nome do sistema:</strong> Controle de Stages WMS<br>
+    <strong>URL oficial:</strong> https://conceicaoabracoquent-q2yk.bolt.host/
+  </p>
+
+  <p class="link-instructions">
+    Aponte a câmera do seu smartphone para o QR Code acima para acessar
+    diretamente a aplicação publicada.
+  </p>
+</div>
+
+<!-- ============ 15. LINGUAGEM DE PROGRAMAÇÃO ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <h2 class="section-title">Linguagem de Programação</h2>
+  </div>
+
+  <p>Stack tecnológico completo que compõe o projeto, organizado por camada:</p>
+
+  <h3>Frontend</h3>
+  <table>
+    <thead><tr><th>Tecnologia</th><th>Versão</th><th>Finalidade</th></tr></thead>
+    <tbody>
+      <tr><td>React</td><td>18.3</td><td>Framework de UI baseado em componentes. Renderização declarativa, hooks, virtual DOM.</td></tr>
+      <tr><td>TypeScript</td><td>5.5</td><td>Superset tipado de JavaScript. Compila para JS, garantindo contratos em tempo de compilação.</td></tr>
+      <tr><td>HTML5</td><td>—</td><td>Linguagem de marcação semântica. Estrutura base em <code>index.html</code>.</td></tr>
+      <tr><td>CSS3</td><td>—</td><td>Estilização via estilos inline e design tokens. Sem TailwindCSS — tokens centralizados em TS.</td></tr>
+      <tr><td>JSX/TSX</td><td>—</td><td>Extensão de sintaxe que permite HTML em JavaScript/TypeScript.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Build e Tooling</h3>
+  <table>
+    <thead><tr><th>Tecnologia</th><th>Versão</th><th>Finalidade</th></tr></thead>
+    <tbody>
+      <tr><td>Vite</td><td>5.3</td><td>Bundler e dev server. HMR instantâneo, build otimizado com Rollup, tree-shaking.</td></tr>
+      <tr><td>@vitejs/plugin-react</td><td>4.3</td><td>Plugin Vite para suporte a JSX/TSX e Fast Refresh.</td></tr>
+      <tr><td>typescript (tsc)</td><td>5.5</td><td>Compilador TypeScript usado no <code>tsc -b</code> antes do build do Vite.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Banco de Dados</h3>
+  <table>
+    <thead><tr><th>Tecnologia</th><th>Finalidade</th></tr></thead>
+    <tbody>
+      <tr><td>PostgreSQL</td><td>Banco de dados relacional gerenciado pelo Supabase. Armazena stages, carriers e pallets com constraints, índices, triggers e RLS.</td></tr>
+      <tr><td>Supabase</td><td>Backend-as-a-Service sobre PostgreSQL. Fornece API REST automática, RLS, auth e realtime. Cliente JS: <code>@supabase/supabase-js</code> 2.110.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Gerenciador de Pacotes</h3>
+  <table>
+    <thead><tr><th>Tecnologia</th><th>Finalidade</th></tr></thead>
+    <tbody>
+      <tr><td>npm</td><td>Gerenciador de pacotes do Node.js. Instala dependências, executa scripts (<code>dev</code>, <code>build</code>, <code>preview</code>).</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Bibliotecas de Apoio</h3>
+  <table>
+    <thead><tr><th>Biblioteca</th><th>Versão</th><th>Finalidade</th></tr></thead>
+    <tbody>
+      <tr><td>lucide-react</td><td>0.383</td><td>Biblioteca de ícones SVG. Usada em botões, cabeçalhos, mapa e indicadores.</td></tr>
+      <tr><td>react-dom</td><td>18.3</td><td>Renderer React para o DOM. Necessário para o React funcionar no navegador.</td></tr>
+      <tr><td>@types/react, @types/react-dom</td><td>18.3</td><td>Definições de tipo TypeScript para React e ReactDOM.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Resumo Executivo</h3>
+  <div class="note">
+    O projeto é uma <strong>Single Page Application (SPA)</strong> escrita em
+    <strong>TypeScript</strong> sobre <strong>React 18</strong>, com build via
+    <strong>Vite</strong> e persistência em <strong>PostgreSQL</strong>
+    gerenciado pelo <strong>Supabase</strong>. O gerenciador de pacotes é
+    <strong>npm</strong>. Não utiliza TailwindCSS — a estilização é feita via
+    design tokens em TypeScript aplicados como estilos inline, garantindo um
+    único ponto de verdade visual.
+  </div>
+</div>
+
+</body>
+</html>
